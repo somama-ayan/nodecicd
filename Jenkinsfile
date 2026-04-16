@@ -3,14 +3,14 @@ pipeline {
 
     stages {
 
-        stage('Build Info') {
+        stage('Checkout Info') {
             steps {
-                sh 'echo "Workspace: $WORKSPACE"'
+                sh 'echo "Code checked out successfully"'
                 sh 'ls -la'
             }
         }
 
-        stage('Build') {
+        stage('Build with Docker Compose') {
             steps {
                 sh 'docker compose down || true'
                 sh 'docker compose up -d --build'
