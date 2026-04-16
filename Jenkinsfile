@@ -3,25 +3,21 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Build Info') {
             steps {
-                git branch: 'master', url: 'https://github.com/somama-ayan/nodecicd.git'
+                sh 'echo "Workspace: $WORKSPACE"'
+                sh 'ls -la'
             }
         }
 
-        stage('Stop Old Containers') {
+        stage('Build') {
             steps {
                 sh 'docker compose down || true'
-            }
-        }
-
-        stage('Build & Deploy') {
-            steps {
                 sh 'docker compose up -d --build'
             }
         }
 
-        stage('Verify Running Containers') {
+        stage('Verify') {
             steps {
                 sh 'docker ps'
             }
