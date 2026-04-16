@@ -2,24 +2,10 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Checkout Info') {
+        stage('Info') {
             steps {
-                sh 'echo "Code checked out successfully"'
+                sh 'echo "SCM pipeline working"'
                 sh 'ls -la'
-            }
-        }
-
-        stage('Build with Docker Compose') {
-            steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d --build'
-            }
-        }
-
-        stage('Verify') {
-            steps {
-                sh 'docker ps'
             }
         }
     }
