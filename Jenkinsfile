@@ -2,15 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Install') {
+
+        stage('Checkout') {
             steps {
-                sh 'npm install'
+                git branch: 'master', url: 'https://github.com/somama-ayan/nodecicd.git'
             }
         }
 
-        stage('Run') {
+        stage('Stop Old Containers') {
             steps {
-                sh 'node index.js'
+                sh 'docker compose down || true'
+            }
+        }
+
+        stage('Build & Deploy') {
+            steps {
+                sh 'docker compose up -d --build'
+            }
+        }
+
+        stage('Verify Running Containers') {
+            steps {
+                sh 'docker ps'
             }
         }
     }
