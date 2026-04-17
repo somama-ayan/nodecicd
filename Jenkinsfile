@@ -1,30 +1,36 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "somamaayan/my-node-app"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
+
     stages {
-        stage('Debug Repo') {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $IMAGE_NAME:$IMAGE_TAG ."
+            }
+        }
+
+        stage('Login to Docker Hub') {
     steps {
-        sh 'pwd'
-        sh 'ls -la'
-        sh 'cat package.json'
+        withCredentials([usernamePassword(credentialsId: 'docker-hub-id', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+            sh 'echo $PASS | docker login -u $USER --password-stdin'
+        }
     }
 }
-        
-        stage('Build Fresh') {
-            steps {
-                sh 'docker-compose build --no-cache'
-            }
-        }
 
-        stage('Run Containers') {
+        stage('Push Image') {
             steps {
-                sh 'docker-compose up -d --force-recreate'
-            }
-        }
-
-        stage('Verify') {
-            steps {
-                sh 'docker ps'
+                sh "docker push $IMAGE_NAME:$IMAGE_TAG"
             }
         }
     }
