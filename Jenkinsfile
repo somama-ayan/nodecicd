@@ -3,18 +3,22 @@ pipeline {
 
     stages {
 
-        stage('Checkout Info') {
+        stage('Clean Docker') {
             steps {
-                sh 'echo "Repo cloned successfully"'
-                sh 'ls -la'
+                sh 'docker-compose down --volumes --remove-orphans || true'
+                sh 'docker system prune -a -f || true'
             }
         }
 
-        stage('Build Docker Compose') {
+        stage('Build Fresh') {
             steps {
-                sh 'docker-compose down || true'
                 sh 'docker-compose build --no-cache'
-                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Run Containers') {
+            steps {
+                sh 'docker-compose up -d --force-recreate'
             }
         }
 
