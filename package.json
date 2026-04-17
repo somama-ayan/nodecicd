@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --legacy-watch server.js"
+    "dev": "nodemon --legacy-watch server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +14,9 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^17.4.1",
-    "mongodb": "^7.1.1",
+    "mongodb": "^7.1.1"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.14"
   }
 }

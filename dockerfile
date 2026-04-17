@@ -4,8 +4,8 @@ WORKDIR /app/
 
 COPY package*.json ./
 
-COPY . /app/ 
-# RUN npm install
+RUN npm install
+COPY . . 
 # RUN npm install -g nodemon
 
-CMD ["node" , "server.js"]
+CMD ["npm" , "start"]
